@@ -2,19 +2,11 @@ import os
 import sys
 from dotenv import load_dotenv
 from openai import OpenAI
+from utils import load_text
 
 load_dotenv()
 
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
-
-def load_text(file_path: str) -> str:
-    """Load text from a file."""
-    try: 
-        with open(file_path, 'r', encoding='utf-8') as file:
-            return file.read()
-    except FileNotFoundError:
-        print(f'Error: File not found at {file_path}')
-        sys.exit(1)
 
 def ask_question(document: str, question: str) -> str:
     """Ask a question about the document using GPT."""
