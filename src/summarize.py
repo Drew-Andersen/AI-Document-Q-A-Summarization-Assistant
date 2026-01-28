@@ -44,5 +44,5 @@ if __name__ == "__main__":
     document_text = load_text(file_path)
     summary = summariz_text(document_text)
 
-    print("\n====== DOCUMENT SUMMARY =======\n")
+    print("SUMMARY:\n")
     print(summary)
