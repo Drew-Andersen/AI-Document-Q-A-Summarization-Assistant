@@ -1,0 +1,5 @@
+Large language models (LLMs) have transformed natural language processing by enabling machines to understand and generate human-like text. 
+They are built using transformer architectures that rely on attention mechanisms to process language efficiently.
+LLMs are widely used for tasks such as text summarization, question answering, translation, and chatbots.
+Despite their capabilities, LLMs can be expensive to run and may produce hallucinated or biased responses.
+As a result, careful prompt design and evaluation are critical when deploying LLM-based systems in real-world applications.
