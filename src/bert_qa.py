@@ -17,7 +17,7 @@ def answer_question(document: str, question: str) -> str:
     return qa_pipeline(question=question, context = document)
 
 if __name__ == "__main__":
-    doc_path = 'data.sample.txt'
+    doc_path = 'data/sample.txt'
     document = load_document(doc_path)
 
     question = input('Ask a question about the document: ')
