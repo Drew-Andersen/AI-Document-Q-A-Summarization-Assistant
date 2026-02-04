@@ -24,11 +24,11 @@ This application allows users to:
 ## Tech Stack
 - **Python 3.10**
 - **OpenAI GPT Models**
-- **python-dotenv** for enviornment management
-- **VS Code** for development
-- **Git & GitHub** for version control
+- **python-dotenv** for environment management
+- **VS Code** 
+- **Git & GitHub** 
 
-*(Planned additions: Hugging Face Transformers, BERT, XLNet, LangChain)*
+*(Currently expanding with Hugging Face Transformers and BERT-based models)*
 
 ## Setup and Installation
 ### 1️⃣ Clone the repository
@@ -40,31 +40,41 @@ cd AI-Document-Q-A-Summarization-Assistant
 ### 2️⃣ Create and activate a virtual environment
 ```bash
 python -m venv .venv
-source .env/bin/activate
+source .venv/bin/activate
 ```
 
-### 3️⃣ Install dependancies
+### 3️⃣ Install dependencies
 ```bash
-pip install requirements.txt
+pip install -r requirements.txt
 ```
 
 ### 4️⃣ Set environment variables
 Create a <code>.env</code> file in the root directory:
 ```.env
-OPENAI_APY_KEY = your_api_key_here
+OPENAI_API_KEY=your_api_key_here
 ```
 
 ## Usage
+> All scripts are designed to be run from the project root using the provided CLI interface.
+
 Document Summarization
 ```bash
 python src/summarize.py data/sample.txt
 ```
 
-Document Question Answering
+Document Question Answering (GPT)
 ```bash
 python src/qa.py data/sample.txt "What are large language models?"
 ```
 If the document does not contain the answer, the assistant will explicitly state that.
+
+## Model Comparison
+| Model | Type | Use Case | Notes |
+|------|------|----------|-------|
+| GPT | Generative | Summarization, open-ended Q&A | Flexible, prompt-driven |
+| BERT | Extractive | Document-grounded Q&A | Deterministic, factual |
+
+This project demonstrates when to use **generative** vs **extractive** NLP approaches depending on task requirements.
 
 ## What This Project Demonstrates
 - Practical LLM integration using modern OpenAI APIs
@@ -74,11 +84,11 @@ If the document does not contain the answer, the assistant will explicitly state
 - Real-world AI engineering best practices
 
 ## Future Improvements
-- Add Hugging Face BERT-based Question Answering
+- Expand BERT-based extractive question answering
 - Add XLNet-based text classification
 - Implement LangChain pipeline for document chunking and embeddings
 - Add a Streamlit UI for interactive usage
-- Support PDF and multi-document imputs
+- Support PDF and multi-document inputs
 - Add evaluation metrics for answer quality
 
 ## Author
