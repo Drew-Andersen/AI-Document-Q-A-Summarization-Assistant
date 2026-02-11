@@ -2,6 +2,18 @@
 An AI-powered document assistant that uses Large Language Models (LLMs) to summarize documents and answer questions **strictly based on provided text**.  
 This project demonstrates practical usage of GPT models, prompt engineering, and modern NLP workflows in a production-style Python codebase.
 
+## Project Structure
+AI-Document-Q-A-Summarization-Assistant/
+├── data/ 
+│ └── sample.txt 
+├── src/ 
+│ ├── summarize.py 
+│ ├── qa.py 
+│ └── bert_qa.py 
+├── .gitignore 
+├── requirements.txt 
+└── README.md 
+
 ## Overview
 Large Language Models have transformed how we interact with text, but deploying them responsibly requires grounding responses in source data and controlling hallucinations.
 
