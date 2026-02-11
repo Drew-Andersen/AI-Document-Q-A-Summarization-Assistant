@@ -68,6 +68,11 @@ python src/qa.py data/sample.txt "What are large language models?"
 ```
 If the document does not contain the answer, the assistant will explicitly state that.
 
+BERT-based Question Answering (Hugging Face)
+```bash
+python src/bert_qa.py
+```
+
 ## Model Comparison
 | Model | Type | Use Case | Notes |
 |------|------|----------|-------|
