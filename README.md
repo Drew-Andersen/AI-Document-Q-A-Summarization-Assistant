@@ -87,11 +87,17 @@ BERT-based Question Answering (Hugging Face)
 python src/bert_qa.py
 ```
 
+XLNet Classification
+```bash
+python src/xlnet_text_classifier.py
+```
+
 ## Model Comparison
 | Model | Type | Use Case | Notes |
 |------|------|----------|-------|
 | GPT | Generative | Summarization, open-ended Q&A | Flexible, prompt-driven |
 | BERT | Extractive | Document-grounded Q&A | Deterministic, factual |
+| XLNet | Classification | Text classification | Permutation language modeling, outputs label + confidence score |
 
 This project demonstrates when to use **generative** vs **extractive** NLP approaches depending on task requirements.
 
