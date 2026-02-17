@@ -1,40 +1,37 @@
-import os
-import sys
-from dotenv import load_dotenv
-from openai import OpenAI
+from pydantic import BaseModel
+from langchain_core.messages import SystemMessage, HumanMessage
+from langchain_core.output_parsers import PydanticOutputParser
+
+from llm.model import get_llm
 from utils import load_text
 
-load_dotenv()
+class SummarySchema(BaseModel):
+    title: str
+    summary: str
+    keywords: list[str]
 
-def summariz_text(text: str) -> str:
-    """Generate a summary using GPT"""
-    client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+def summarize_document(file_path: str):
+    document = load_text(file_path)
 
-    prompt = (
-        "Summarize the following document in 5 concise bullet points."
-        "Focus ont he key ideas and main conclusions.\n\n"
-        f"{text}"
-    )
+    llm = get_llm()
+    parser = PydanticOutputParser(pydantic_object=SummarySchema)
 
-    response = client.chat.completions.create(
-        model='gpt-3.5-turbo',
-        messages=[
-            {'role': 'system', 'content': 'You are a helpful AI assistant.'},
-            {'role': 'user', 'content': prompt}
-        ],
-        temperature=0.3
-    )
+    format_instructions = parser.get_format_instructions()
 
-    return response.choices[0].message.content
+    messages = [
+        SystemMessage(
+            content="You are a document summarization assistant. Return structured output."
+        ),
+        HumanMessage(
+            content=f"""Summarize the following document.
+            
+            {format_instructions}
 
-if __name__ == "__main__":
-    if len(sys.argv) < 2:
-        print('Usage: python summarize.py <path_to_text_file>')
-        sys.exit(1)
-    
-    file_path = sys.argv[1]
-    document_text = load_text(file_path)
-    summary = summariz_text(document_text)
+            Document: 
+            {document}
+            """
+        )
+    ]
 
-    print("SUMMARY:\n")
-    print(summary)
+    response = llm.invoke(messages)
+    return parser.parse(response.content)

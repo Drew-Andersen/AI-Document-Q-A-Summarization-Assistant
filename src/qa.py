@@ -1,48 +1,24 @@
-import os
-import sys
-from dotenv import load_dotenv
-from openai import OpenAI
+from langchain_core.messages import SystemMessage, HumanMessage
+from llm.model import get_llm
 from utils import load_text
 
-load_dotenv()
+def ask_question(file_path: str, question: str):
+    document = load_text(file_path)
+    llm = get_llm()
 
-client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+    messages = [
+        SystemMessage(
+            content = "You are a document question-answering assistant. Return only the answer to the question. Do not restate the question."
+        ),
+        HumanMessage(
+            content=f"""
+            Answer the question based only on the document below.
 
-def ask_question(document: str, question: str) -> str:
-    """Ask a question about the document using GPT."""
-    prompt = f"""
-        You are a document-based question answering assistant.
-        Answer the question using ONLY the information provided in the document.
-        If the answer cannot be found in the document, say "The document does not contain this information."
+            Document:
+            {document}
+            """
+        )
+    ]
 
-        Document:
-        {document}
-
-        Question:
-        {question}
-        """
-    
-    response = client.chat.completions.create(
-        model='gpt-3.5-turbo',
-        messages=[
-            {"role": "system", "content": "You answer questions stricktly based on the provided documents."},
-            {"role": "user", "content": prompt}
-        ],
-        temperature=0.3
-    )
-
-    return response.choices[0].message.content.strip()
-
-if __name__ == "__main__":
-    if len(sys.argv) < 3:
-        print("Usage: python qa.py <path_to_text_file> <question>")
-        sys.exit(1)
-
-    file_path = sys.argv[1]
-    question = sys.argv[2]
-
-    document_text = load_text(file_path)
-    answer = ask_question(document_text, question)
-
-    print("ANSWER:")
-    print(answer)
+    response = llm.invoke(messages)
+    return response.content
