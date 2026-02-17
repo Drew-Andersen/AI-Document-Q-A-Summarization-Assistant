@@ -1,18 +1,23 @@
 import os
-from openai import OpenAI
 from dotenv import load_dotenv
+from langchain_openai.chat_models import ChatOpenAI
+from langchain_core.messages import SystemMessage, HumanMessage
 
 load_dotenv()
 
-client = OpenAI(api_key=os.getenv('OPENAI_API_KEY'))
+def test_langchain_openai():
+    llm = ChatOpenAI(
+        model = 'gpt-4',
+        temperature = 0
+    )
 
-completion = client.chat.completions.create(model='gpt-4',
-                                           messages=[
-                                               {'role': 'user',
-                                                'content': 'Explain embeddings in simple terms'}
-                                           ], max_tokens=250, temperature=0, seed=365, stream=True)
+    messages = [
+        SystemMessage(content="You are a helpful AI assistant."),
+        HumanMessage(content="Explain Large Language Models in simple terms.")
+    ]
 
-for i in completion:
-    delta = i.choices[0].delta
-    if delta.content:
-        print(delta.content, end="")
+    response = llm.invoke(messages)
+    print(response.content)
+
+if __name__ == "__main__":
+    test_langchain_openai()
