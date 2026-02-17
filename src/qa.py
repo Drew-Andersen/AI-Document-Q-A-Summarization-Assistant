@@ -7,13 +7,16 @@ def ask_question(file_path: str, question: str):
     llm = get_llm()
 
     messages = [
+        # Telling the chatbot to only return the answer
         SystemMessage(
-            content = "You are a document question-answering assistant. Return only the answer to the question. Do not restate the question."
+            content = '''You are a document question-answering assistant. Return only the answer to the question. Do not restate 
+            the question.'''
         ),
+        # Giving instructions on how to answer the questions.
         HumanMessage(
             content=f"""
-            Answer the question based only on the text in the document below. If the answer is not explicitly in the document, respond
-            with: "The document does not contain this information."
+            Answer the question based only on the text in the document below. If the answer is not explicitly in the document, 
+            respond with: "The document does not contain this information."
 
             Document:
             {document}
