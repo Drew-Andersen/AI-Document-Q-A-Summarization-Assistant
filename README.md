@@ -1,6 +1,11 @@
 # AI-Document-Q-A-Summarization-Assistant
-An AI-powered document assistant that uses Large Language Models (LLMs) to summarize documents and answer questions **strictly based on provided text**.  
-This project demonstrates practical usage of GPT models, prompt engineering, and modern NLP workflows in a production-style Python codebase.
+
+A production-style AI document assistant that:
+- Summarizes long documents into concise bullet points
+- Answers questions strictly grounded in sourse text
+- Detects insuffucuent information to prevent hallucination
+
+Built with GPT models and transformer-based NLP approaches.
 
 ## Project Structure
 ```
@@ -8,41 +13,63 @@ AI-Document-Q-A-Summarization-Assistant/
 ├── data/ 
 │ └── sample.txt 
 ├── src/ 
+│ ├── llm 
+│ │   └── model.py 
+│ ├── practice 
+│ │   ├── bert_qa.py 
+│ │   ├── langchain_openai_test.py
+│ │   └── xlnet_text_classifier.py
+│ ├── main.py
+│ ├── qa.py
 │ ├── summarize.py 
-│ ├── qa.py 
-│ └── bert_qa.py 
+│ └── utils.py 
 ├── .gitignore 
-├── requirements.txt 
-└── README.md 
+├── README.md 
+└── requirements.txt  
 ```
 
 ## Overview
-Large Language Models have transformed how we interact with text, but deploying them responsibly requires grounding responses in source data and controlling hallucinations.
+Large Language Models have transformed how we interact with text. However, deploying them responsibly requires:
+- Grounding responses in source data
+- Controlling hallucinations
+- Designing modular, maintainable systems
 
 This application allows users to:
 - Summarize documents using GPT-based LLMs
-- Ask questions about a document and receive grounded answers
-- Detect when a document does *not* contain sufficient information
+- Ask questions about a document 
+- Explicitly detect when information is missing
 
 ## Features
 - **Document Summarization**
   - Generates concise bullet-point summaries from text files
+  - Uses prompt constraints to control hallucinations
 - **Document-Based Question Answering**
   - Answers questions using *only* the provided document
-  - Explicitly avoids hallucinations when information is missing
+  - Refuses to fabricate information when insufficient context exists
 - **Prompt Grounding**
-  - Clear separation between document context and model knowledge
+  - Clear separation between document context and model instructions
+  - Explicit system contraints to prevent external knowledge leakage
 - **Modular Python Architecture**
-  - Clean, extensible structure suitable for future expansion
+  - Extensible design for adding new models
+  - Clean separation of concerns
+  - Centralized LLM abstraction layer
+
+## Model Comparison
+| Model | Type | Use Case | Notes |
+|------|------|----------|-------|
+| GPT | Generative | Summarization, open-ended Q&A | Flexible, prompt-driven |
+| BERT | Extractive | Document-grounded Q&A | Deterministic, factual |
+| XLNet | Classification | Text classification | Permutation language modeling, outputs label + confidence score |
+
+This project demonstrates when to use **generative** vs **extractive** NLP approaches depending on task requirements.
 
 ## Tech Stack
 - **Python 3.10**
 - **OpenAI GPT Models**
+- **Hugginf Face Transformers** (experimental)
 - **python-dotenv** for environment management
 - **VS Code** 
 - **Git & GitHub** 
-
-*(Currently expanding with Hugging Face Transformers and BERT-based models)*
 
 ## Setup and Installation
 ### 1️⃣ Clone the repository
@@ -71,50 +98,35 @@ OPENAI_API_KEY=your_api_key_here
 ## Usage
 > All scripts are designed to be run from the project root using the provided CLI interface.
 
-Document Summarization
+Document Summarization and Question Answering
 ```bash
-python src/summarize.py data/sample.txt
+python src/main.py
 ```
-
-Document Question Answering (GPT)
-```bash
-python src/qa.py data/sample.txt "What are large language models?"
-```
-If the document does not contain the answer, the assistant will explicitly state that.
-
+### Experimental Implementations (Practice Folder)
 BERT-based Question Answering (Hugging Face)
 ```bash
-python src/bert_qa.py
+python src/practice/bert_qa.py
 ```
 
 XLNet Classification
 ```bash
-python src/xlnet_text_classifier.py
+python src/practice/xlnet_text_classifier.py
 ```
-
-## Model Comparison
-| Model | Type | Use Case | Notes |
-|------|------|----------|-------|
-| GPT | Generative | Summarization, open-ended Q&A | Flexible, prompt-driven |
-| BERT | Extractive | Document-grounded Q&A | Deterministic, factual |
-| XLNet | Classification | Text classification | Permutation language modeling, outputs label + confidence score |
-
-This project demonstrates when to use **generative** vs **extractive** NLP approaches depending on task requirements.
 
 ## What This Project Demonstrates
 - Practical LLM integration using modern OpenAI APIs
 - Prompt engineering for grounding and hallucination control
-- Clean separation of data loading, inference, and CLI logic
-- Transition from traditional NLP concepts to LLM-based workflows
-- Real-world AI engineering best practices
+- Design modular AI systems
+- Comparing generative vs extractive NLP approaches
+- Transition from traditional NLP concepts to LLM workflows
+- Production-style environment configuration 
 
 ## Future Improvements
-- Expand BERT-based extractive question answering
-- Add XLNet-based text classification
-- Implement LangChain pipeline for document chunking and embeddings
+- Expand BERT-based extractive QA with evaluation metrics
+- Implement document chunking + embeddings (RAG pipeline)
 - Add a Streamlit UI for interactive usage
 - Support PDF and multi-document inputs
-- Add evaluation metrics for answer quality
+- Add automated answer evaluation metrics
 
 ## Author
 Drew Andersen
