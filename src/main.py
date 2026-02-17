@@ -10,5 +10,6 @@ if __name__ == "__main__":
     print("Summary:", summary.summary)
     print("Keywords:", summary.keywords)
 
-    answer = ask_question("data/sample.txt", "What is the main topic?")
+    question = input("\nEnter your question about the document: ").strip()
+    answer = ask_question("data/sample.txt", question)
     print("Answer:", answer)

@@ -12,10 +12,14 @@ def ask_question(file_path: str, question: str):
         ),
         HumanMessage(
             content=f"""
-            Answer the question based only on the document below.
+            Answer the question based only on the text in the document below. If the answer is not explicitly in the document, respond
+            with: "The document does not contain this information."
 
             Document:
             {document}
+
+            Question:
+            {question}
             """
         )
     ]
