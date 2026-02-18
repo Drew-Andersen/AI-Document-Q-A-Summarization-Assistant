@@ -2,17 +2,27 @@
 
 A production-style AI document assistant that:
 - Summarizes long documents into concise bullet points
-- Answers questions strictly grounded in sourse text
-- Detects insuffucuent information to prevent hallucination
+- Answers questions strictly grounded in source text
+- Streams responses in real-time using LangChain LCEL
+- Detects insufficient information to prevent hallucination
 
-Built with GPT models and transformer-based NLP approaches.
+Built with OpenAI GPT models, LangChain LCEL pipelines, and transformer-based NLP architectures.
+
+## Project Architecture
+This project demonstrates a modular AI system built using LangChain Expression Language (LCEL).
+
+Key architectural concepts:
+- invoke() - single input execution
+- batch() - parallel multi-input execution
+- stream() - token-level streaming output
+- LCEL piping (|) for composable AI pipelines
 
 ## Project Structure
 ```
 AI-Document-Q-A-Summarization-Assistant/
-├── data/ 
+├── data 
 │ └── sample.txt 
-├── src/ 
+├── src 
 │ ├── llm 
 │ │   └── model.py 
 │ ├── practice 
@@ -29,30 +39,30 @@ AI-Document-Q-A-Summarization-Assistant/
 ```
 
 ## Overview
-Large Language Models have transformed how we interact with text. However, deploying them responsibly requires:
+Large Language Models (LLMs) have transformed how we interact with text. However, deploying them responsibly requires:
 - Grounding responses in source data
 - Controlling hallucinations
 - Designing modular, maintainable systems
 
-This application allows users to:
-- Summarize documents using GPT-based LLMs
-- Ask questions about a document 
-- Explicitly detect when information is missing
+This application demonstrates:
+- Generative LLM summarization
+- Document-grounded question answering 
+- Streaming outputs using LCEL
+- Clean separation of concerns between CLI, pipelines, and utilities
 
 ## Features
 - **Document Summarization**
-  - Generates concise bullet-point summaries from text files
-  - Uses prompt constraints to control hallucinations
-- **Document-Based Question Answering**
+  - Bullet-point summaries
+  - Keyword extraction
+  - Structured output
+- **LCEL-Based Question Answering**
   - Answers questions using *only* the provided document
-  - Refuses to fabricate information when insufficient context exists
-- **Prompt Grounding**
-  - Clear separation between document context and model instructions
-  - Explicit system contraints to prevent external knowledge leakage
-- **Modular Python Architecture**
-  - Extensible design for adding new models
-  - Clean separation of concerns
-  - Centralized LLM abstraction layer
+  - Explicitly states when information is missing
+  - Real-time token streaming in the CLI
+- **Modular Architecture**
+  - Reusable QA chain
+  - Clear separation of runtime logic and LLM logic
+  - Easily extensible to RAG pipelines
 
 ## Model Comparison
 | Model | Type | Use Case | Notes |
@@ -64,12 +74,11 @@ This application allows users to:
 This project demonstrates when to use **generative** vs **extractive** NLP approaches depending on task requirements.
 
 ## Tech Stack
-- **Python 3.10**
+- **Python 3.10+**
 - **OpenAI GPT Models**
-- **Hugginf Face Transformers** (experimental)
-- **python-dotenv** for environment management
-- **VS Code** 
-- **Git & GitHub** 
+- **LangChain (LCEL)** 
+- **python-dotenv** 
+- **Hugging Face Transformers (practice modules)** 
 
 ## Setup and Installation
 ### 1️⃣ Clone the repository
@@ -116,17 +125,17 @@ python src/practice/xlnet_text_classifier.py
 ## What This Project Demonstrates
 - Practical LLM integration using modern OpenAI APIs
 - Prompt engineering for grounding and hallucination control
-- Design modular AI systems
+- Designing modular AI systems
 - Comparing generative vs extractive NLP approaches
-- Transition from traditional NLP concepts to LLM workflows
+- Transitioning from traditional NLP concepts to LLM workflows
 - Production-style environment configuration 
 
 ## Future Improvements
-- Expand BERT-based extractive QA with evaluation metrics
-- Implement document chunking + embeddings (RAG pipeline)
-- Add a Streamlit UI for interactive usage
-- Support PDF and multi-document inputs
-- Add automated answer evaluation metrics
+- Convert summarization to LCEL
+- Add RAG pipeline with embeddings
+- Integrate vector database
+- Add Streamlit UI
+- Add evaluation benchmarking with batch()
 
 ## Author
 Drew Andersen

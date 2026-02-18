@@ -1,31 +1,27 @@
-from langchain_core.messages import SystemMessage, HumanMessage
-from llm.model import get_llm
+from langchain_core.prompts import ChatPromptTemplate
+from langchain_openai import ChatOpenAI
+from langchain_core. output_parsers import StrOutputParser
+from langchain_core.runnables import RunnablePassthrough
 from utils import load_text
 
-def ask_question(file_path: str, question: str):
-    document = load_text(file_path)
-    llm = get_llm()
+def build_qa_question():
+    prompt = ChatPromptTemplate.from_template(
+        """
+        Answer the question using ONLY the context below.
+        If the answer is not in the context, say:
+        "The document does not contain the information."
 
-    messages = [
-        # Telling the chatbot to only return the answer
-        SystemMessage(
-            content = '''You are a document question-answering assistant. Return only the answer to the question. Do not restate 
-            the question.'''
-        ),
-        # Giving instructions on how to answer the questions.
-        HumanMessage(
-            content=f"""
-            Answer the question based only on the text in the document below. If the answer is not explicitly in the document, 
-            respond with: "The document does not contain this information."
+        Context: 
+        {context}
 
-            Document:
-            {document}
+        Question:
+        {question}
+        """)
+    
+    chat_prompt = ChatOpenAI()
+    otput_parser = StrOutputParser()
 
-            Question:
-            {question}
-            """
-        )
-    ]
+    chain = prompt | chat_prompt | otput_parser
 
-    response = llm.invoke(messages)
-    return response.content
+    return chain
+
