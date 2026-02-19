@@ -1,4 +1,6 @@
 # AI-Document-Q-A-Summarization-Assistant
+A Retrieval-Augmented Generation (RAG) system that combines transformer LLMs with LangChain and Chroma for grounded document summarization and question answering.
+
 
 A Retrieval-Augmented Generation (RAG) system built with LangChain that:
 - Summarizes long documents into concise bullet points
@@ -6,7 +8,7 @@ A Retrieval-Augmented Generation (RAG) system built with LangChain that:
 - Streams responses in real-time using LangChain LCEL
 - Uses Chroma for semantic search
 
-Built with OpenAI GPT models, LangChain LCEL pipelines, RAG, and transformer-based NLP architectures.
+Built with OpenAI GPT models, LangChain LCEL pipelines, Retrieval‑Augmented Generation (RAG), and transformer-based NLP architectures.
 
 ## Project Architecture
 This project demonstrates a modular AI system built using LangChain Expression Language (LCEL).
@@ -56,12 +58,12 @@ This application demonstrates:
 
 ## Features
 ### Document Summarization
-  - Uses structured Pydantic schema
-  - Extracts:
-    - Title
-    - Summary
-    - Keywords
-  - Enforces format using `PydanticOutputParser`
+- Uses structured Pydantic schema
+- Extracts:
+  - Title
+  - Summary
+  - Keywords
+- Enforces format using `PydanticOutputParser`
 
 ### Retrieval-Augmented Generation (RAG)
 - Splits documents into semantic chunks
