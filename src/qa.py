@@ -1,10 +1,15 @@
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_openai import ChatOpenAI
 from langchain_core. output_parsers import StrOutputParser
-from langchain_core.runnables import RunnablePassthrough
-from utils import load_text
+from langchain_core.runnables import RunnablePassthrough, RunnableLambda
+from rag.retriever import get_retriever
 
-def build_qa_question():
+def build_qa_chain(file_path: str):
+    retriever = get_retriever(file_path)
+
+    def format_docs(docs):
+        return "\n\n".join(doc.page_content for doc in docs)
+
     prompt = ChatPromptTemplate.from_template(
         """
         Answer the question using ONLY the context below.
@@ -16,12 +21,21 @@ def build_qa_question():
 
         Question:
         {question}
+        If the question refers to an acronym, use the expanded form found in the context.
         """)
     
-    chat_prompt = ChatOpenAI()
-    otput_parser = StrOutputParser()
+    llm = ChatOpenAI()
+    output_parser = StrOutputParser()
 
-    chain = prompt | chat_prompt | otput_parser
+    chain = (
+        {
+        "context": retriever | RunnableLambda(format_docs), 
+        "question": RunnablePassthrough()
+        } 
+        | prompt 
+        | llm 
+        | output_parser
+    )
 
     return chain
 

@@ -1,6 +1,6 @@
 from dotenv import load_dotenv
 from summarize import summarize_document
-from qa import build_qa_question
+from qa import build_qa_chain
 from utils import load_text
 
 load_dotenv()
@@ -18,12 +18,9 @@ if __name__ == "__main__":
     document = load_text(file_path)
 
     # Build QA chain
-    qa_chain = build_qa_question()
-    question = input("\nEnter your question about the document: ").strip()
+    qa_chain = build_qa_chain("data/sample.txt")
+    question = input("\nEnter your question about the document: ").strip().capitalize()
     print("Answer:\n")
 
-    for chunk in qa_chain.stream({
-        "context": document,
-        "question": question
-    }):
+    for chunk in qa_chain.stream(question):
         print(chunk, end="", flush=True)

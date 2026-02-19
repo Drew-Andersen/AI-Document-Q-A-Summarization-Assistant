@@ -1,12 +1,12 @@
 # AI-Document-Q-A-Summarization-Assistant
 
-A production-style AI document assistant that:
+A Retrieval-Augmented Generation (RAG) system built with LangChain that:
 - Summarizes long documents into concise bullet points
-- Answers questions strictly grounded in source text
+- Answers grounded questions using vector retrieval
 - Streams responses in real-time using LangChain LCEL
-- Detects insufficient information to prevent hallucination
+- Uses Chroma for semantic search
 
-Built with OpenAI GPT models, LangChain LCEL pipelines, and transformer-based NLP architectures.
+Built with OpenAI GPT models, LangChain LCEL pipelines, RAG, and transformer-based NLP architectures.
 
 ## Project Architecture
 This project demonstrates a modular AI system built using LangChain Expression Language (LCEL).
@@ -25,6 +25,9 @@ AI-Document-Q-A-Summarization-Assistant/
 ├── src 
 │ ├── llm 
 │ │   └── model.py 
+│ ├── rag 
+│ │   ├── retriever.py
+│ │   └── vectorstore.py
 │ ├── practice 
 │ │   ├── bert_qa.py 
 │ │   ├── langchain_openai_test.py
@@ -39,7 +42,8 @@ AI-Document-Q-A-Summarization-Assistant/
 ```
 
 ## Overview
-Large Language Models (LLMs) have transformed how we interact with text. However, deploying them responsibly requires:
+Large Language Models (LLMs) have transformed how we interact with text. 
+Responsible deployment requires:
 - Grounding responses in source data
 - Controlling hallucinations
 - Designing modular, maintainable systems
@@ -51,18 +55,31 @@ This application demonstrates:
 - Clean separation of concerns between CLI, pipelines, and utilities
 
 ## Features
-- **Document Summarization**
-  - Bullet-point summaries
-  - Keyword extraction
-  - Structured output
-- **LCEL-Based Question Answering**
-  - Answers questions using *only* the provided document
-  - Explicitly states when information is missing
-  - Real-time token streaming in the CLI
-- **Modular Architecture**
-  - Reusable QA chain
-  - Clear separation of runtime logic and LLM logic
-  - Easily extensible to RAG pipelines
+### Document Summarization
+  - Uses structured Pydantic schema
+  - Extracts:
+    - Title
+    - Summary
+    - Keywords
+  - Enforces format using `PydanticOutputParser`
+
+### Retrieval-Augmented Generation (RAG)
+- Splits documents into semantic chunks
+- Embeds chunks using OpenAI embeddings
+- Stores embeddings in Chroma vector database
+- Uses MMR retrieval for diverse context
+- Grounds answers strictly in retrieved context
+
+### Streaming Responses
+- Streams LLM output token-by-token using LCEL `.stream()`
+
+### LCEL Pipeline
+Built using LangChain Expression Language:
+  - `RunnablePassthrough`
+  - `RunnableLambda`
+  - Prompt templates
+  - Output parsers
+  - Streaming execution
 
 ## Model Comparison
 | Model | Type | Use Case | Notes |
@@ -100,7 +117,7 @@ pip install -r requirements.txt
 
 ### 4️⃣ Set environment variables
 Create a <code>.env</code> file in the root directory:
-```.env
+```bash
 OPENAI_API_KEY=your_api_key_here
 ```
 
@@ -111,6 +128,11 @@ Document Summarization and Question Answering
 ```bash
 python src/main.py
 ```
+You will see:
+1. Structured document summary
+2. Prompt for a question
+3. Streamed grounded answer
+
 ### Experimental Implementations (Practice Folder)
 BERT-based Question Answering (Hugging Face)
 ```bash
@@ -123,19 +145,20 @@ python src/practice/xlnet_text_classifier.py
 ```
 
 ## What This Project Demonstrates
-- Practical LLM integration using modern OpenAI APIs
-- Prompt engineering for grounding and hallucination control
-- Designing modular AI systems
-- Comparing generative vs extractive NLP approaches
-- Transitioning from traditional NLP concepts to LLM workflows
-- Production-style environment configuration 
+- Retrieval-Augmented Generation (RAG)
+- Vector similarity search
+- MMR retrieval strategy
+- Document chunking strategies
+- Structured LLM outputs
+- Prompt engineering
+- Streaming inference
+- Modular AI system design
 
 ## Future Improvements
-- Convert summarization to LCEL
-- Add RAG pipeline with embeddings
-- Integrate vector database
-- Add Streamlit UI
-- Add evaluation benchmarking with batch()
+- Source citation display
+- Persistent vector database loading
+- Evaluation pipeline for QA
+- Web UI interface (FastAPI, Flask, or Streamlit)
 
 ## Author
 Drew Andersen
